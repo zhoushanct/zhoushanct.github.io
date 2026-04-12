@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>舟山市城投集团内部政策资料库</title>
+    <style>
+        body{max-width:800px;margin:40px auto;font-family:system-ui,-apple-system,PingFang SC,Hiragino Sans GB,Microsoft YaHei;padding:20px;background:#f5f5f5}
+        .login{background:white;padding:30px;border-radius:10px;box-shadow:0 2px 10px #00000010}
+        input{width:100%;padding:12px;margin:10px 0;border:1px solid #ddd;border-radius:6px;font-size:16px}
+        button{background:#2563eb;color:white;border:none;padding:12px;width:100%;border-radius:6px;font-size:16px;cursor:pointer}
+        #content{display:none;background:white;padding:30px;border-radius:10px;margin-top:20px;line-height:1.7}
+        .file-item{padding:12px 0;border-bottom:1px solid #eee}
+        .file-item a{color:#2563eb;text-decoration:none}
+        .file-item a:hover{text-decoration:underline}
+    </style>
+</head>
+<body>
+<div class="login">
+    <h3>请输入访问密码</h3>
+    <input type="password" id="pwd" placeholder="请输入访问密码">
+    <button onclick="check()">验证进入</button>
+</div>
+
+<div id="content">
+    <h2>舟山市城投集团内部政策文件库</h2>
+    <p style="color:#666;font-size:14px">仅内部人员可见，禁止外传</p>
+
+    <div class="file-item">
+        <strong>1. 中央预算内投资管理办法.pdf</strong><br>
+        <a href="中央预算内投资管理办法.pdf" target="_blank">在线查看 / 下载</a>
+    </div>
+    <div class="file-item">
+        <strong>2. 专项债项目申报指引.docx</strong><br>
+        <a href="专项债项目申报指引.docx" target="_blank">在线查看 / 下载</a>
+    </div>
+    <div class="file-item">
+        <strong>3. 城投公司合规管理要点.txt</strong><br>
+        <a href="城投公司合规管理要点.txt" target="_blank">在线查看 / 下载</a>
+    </div>
+    <div class="file-item">
+        <strong>4. 浙江省两重两新资金申报指南.pdf</strong><br>
+        <a href="浙江省两重两新资金申报指南.pdf" target="_blank">在线查看 / 下载</a>
+    </div>
+</div>
+
+<script>
+function check(){
+    let p = document.getElementById('pwd').value;
+    // 你可以在这里改成你自己的密码，比如 zsct2026
+    if(p === 'zsct2026'){
+        document.querySelector('.login').style.display='none';
+        document.getElementById('content').style.display='block';
+    }else{
+        alert('密码错误，请重新输入');
+    }
+}
+</script>
+</body>
+</html>
