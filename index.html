@@ -2,58 +2,101 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>舟山市城投集团内部政策资料库</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>舟山城投政策汇编</title>
+    <!-- 引入 Tailwind CSS 进行美化 -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body{max-width:800px;margin:40px auto;font-family:system-ui,-apple-system,PingFang SC,Hiragino Sans GB,Microsoft YaHei;padding:20px;background:#f5f5f5}
-        .login{background:white;padding:30px;border-radius:10px;box-shadow:0 2px 10px #00000010}
-        input{width:100%;padding:12px;margin:10px 0;border:1px solid #ddd;border-radius:6px;font-size:16px}
-        button{background:#2563eb;color:white;border:none;padding:12px;width:100%;border-radius:6px;font-size:16px;cursor:pointer}
-        #content{display:none;background:white;padding:30px;border-radius:10px;margin-top:20px;line-height:1.7}
-        .file-item{padding:12px 0;border-bottom:1px solid #eee}
-        .file-item a{color:#2563eb;text-decoration:none}
-        .file-item a:hover{text-decoration:underline}
+        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); }
     </style>
 </head>
-<body>
-<div class="login">
-    <h3>请输入访问密码</h3>
-    <input type="password" id="pwd" placeholder="请输入访问密码">
-    <button onclick="check()">验证进入</button>
-</div>
+<body class="bg-gray-50 text-gray-800">
 
-<div id="content">
-    <h2>舟山市城投集团内部政策文件库</h2>
-    <p style="color:#666;font-size:14px">仅内部人员可见，禁止外传</p>
+    <!-- 密码登录层 -->
+    <div id="loginScreen" class="fixed inset-0 z-50 flex items-center justify-center bg-white">
+        <div class="text-center p-8 max-w-md w-full shadow-2xl rounded-xl border border-gray-100">
+            <h2 class="text-2xl font-bold mb-6 text-blue-800">舟山城投政策库</h2>
+            <input type="password" id="passwordInput" placeholder="请输入访问密码" class="w-full p-3 border border-gray-300 rounded-lg mb-4 text-center focus:ring-2 focus:ring-blue-500 outline-none">
+            <button onclick="checkPassword()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition">进入系统</button>
+            <p id="errorMsg" class="text-red-500 mt-4 hidden">密码错误，请重试</p>
+        </div>
+    </div>
 
-    <div class="file-item">
-        <strong>1. 中央预算内投资管理办法.pdf</strong><br>
-        <a href="中央预算内投资管理办法.pdf" target="_blank">在线查看 / 下载</a>
-    </div>
-    <div class="file-item">
-        <strong>2. 专项债项目申报指引.docx</strong><br>
-        <a href="专项债项目申报指引.docx" target="_blank">在线查看 / 下载</a>
-    </div>
-    <div class="file-item">
-        <strong>3. 城投公司合规管理要点.txt</strong><br>
-        <a href="城投公司合规管理要点.txt" target="_blank">在线查看 / 下载</a>
-    </div>
-    <div class="file-item">
-        <strong>4. 浙江省两重两新资金申报指南.pdf</strong><br>
-        <a href="浙江省两重两新资金申报指南.pdf" target="_blank">在线查看 / 下载</a>
-    </div>
-</div>
+    <!-- 真实内容层 -->
+    <div id="mainContent" class="hidden">
+        <!-- 顶部导航 -->
+        <header class="gradient-bg text-white shadow-lg">
+            <div class="container mx-auto px-6 py-10">
+                <h1 class="text-3xl font-bold mb-2">舟山城投 · 政策汇编</h1>
+                <p class="opacity-80">汇聚城市建设与投资发展核心政策文件</p>
+            </div>
+        </header>
 
-<script>
-function check(){
-    let p = document.getElementById('pwd').value;
-    // 你可以在这里改成你自己的密码，比如 zsct2026
-    if(p === 'zsct2026'){
-        document.querySelector('.login').style.display='none';
-        document.getElementById('content').style.display='block';
-    }else{
-        alert('密码错误，请重新输入');
-    }
-}
-</script>
+        <!-- 内容列表 -->
+        <main class="container mx-auto px-6 py-10">
+            <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                
+                <!-- 政策卡片模板 -->
+                <!-- 你可以复制下面这个 block 来添加更多政策 -->
+                
+                <a href="https://www.zjzwfw.gov.cn/" target="_blank" class="group block bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 hover:-translate-y-1">
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">国家级</span>
+                        <svg class="w-5 h-5 text-gray-400 group-hover:text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-700">关于进一步推进城市基础设施投资的指导意见</h3>
+                    <p class="text-gray-500 text-sm mb-4">住建部 / 2025-12-01</p>
+                    <div class="text-sm text-blue-600 font-medium">点击访问官网原文 &rarr;</div>
+                </a>
+
+                <!-- 政策卡片 2 -->
+                <a href="https://www.zhoushan.gov.cn/" target="_blank" class="group block bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 hover:-translate-y-1">
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded">舟山市级</span>
+                        <svg class="w-5 h-5 text-gray-400 group-hover:text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-2 group-hover:text-green-700">舟山市2026年度政府投资项目计划安排</h3>
+                    <p class="text-gray-500 text-sm mb-4">市政府 / 2026-01-15</p>
+                    <div class="text-sm text-green-600 font-medium">点击访问官网原文 &rarr;</div>
+                </a>
+
+                <!-- 政策卡片 3 -->
+                <a href="https://zjzs.zjzwfw.gov.cn/" target="_blank" class="group block bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 hover:-translate-y-1">
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="bg-purple-100 text-purple-800 text-xs font-semibold px-2.5 py-0.5 rounded">资金申报</span>
+                        <svg class="w-5 h-5 text-gray-400 group-hover:text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-2 group-hover:text-purple-700">中央预算内投资专项管理办法</h3>
+                    <p class="text-gray-500 text-sm mb-4">发改委 / 2025-09-20</p>
+                    <div class="text-sm text-purple-600 font-medium">点击访问官网原文 &rarr;</div>
+                </a>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // 密码校验逻辑
+        // 警告：此方式仅为防君子不防小人，密码在前端源码中完全可见
+        const PASSWORD = "123456";
+
+        function checkPassword() {
+            const input = document.getElementById('passwordInput').value;
+            if (input === PASSWORD) {
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('mainContent').classList.remove('hidden');
+            } else {
+                document.getElementById('errorMsg').classList.remove('hidden');
+            }
+        }
+
+        // 支持回车登录
+        document.getElementById("passwordInput").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                checkPassword();
+            }
+        });
+    </script>
 </body>
 </html>
