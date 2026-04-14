@@ -3,96 +3,273 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>舟山城投政策汇编</title>
-    <!-- 引入 Tailwind CSS 进行美化 -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>舟山城投政策收集库</title>
     <style>
-        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
-        .gradient-bg { background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); }
+        body {
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 0 20px;
+            background-color: #f4f6f9;
+            color: #333;
+        }
+
+        /* 登录页样式 */
+        #login-box {
+            text-align: center;
+            padding: 60px 40px;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        #login-box h2 {
+            margin-bottom: 30px;
+            color: #0056b3;
+        }
+
+        #password-input {
+            padding: 12px;
+            width: 220px;
+            margin: 20px 0;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 12px 30px;
+            background-color: #0056b3;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: #004494;
+        }
+
+        #error-msg {
+            color: #dc3545;
+            margin-top: 15px;
+            display: none;
+        }
+
+        /* 通用内容样式 */
+        .page-view {
+            display: none; /* 默认隐藏所有页面 */
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            min-height: 400px;
+        }
+
+        .header {
+            border-bottom: 2px solid #0056b3;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #0056b3;
+        }
+
+        .nav-link {
+            color: #0056b3;
+            text-decoration: none;
+            font-size: 14px;
+            cursor: pointer;
+            border: 1px solid #0056b3;
+            padding: 6px 12px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover {
+            background-color: #0056b3;
+            color: white;
+        }
+
+        /* 首页卡片样式 */
+        .policy-card {
+            margin: 20px 0;
+            padding: 25px;
+            background-color: #f8f9fa;
+            border-left: 5px solid #0056b3;
+            border-radius: 0 8px 8px 0;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .policy-card:hover {
+            transform: translateX(5px);
+            background-color: #e9ecef;
+        }
+
+        .policy-card h3 {
+            margin: 0 0 8px 0;
+            color: #333;
+        }
+
+        .policy-card p {
+            margin: 0;
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* 政策列表示样 */
+        .policy-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .policy-list li {
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .policy-list li:last-child {
+            border-bottom: none;
+        }
+
+        .policy-list a {
+            color: #0056b3;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .policy-list a:hover {
+            text-decoration: underline;
+        }
+
+        .policy-desc {
+            font-size: 13px;
+            color: #777;
+            margin-top: 5px;
+        }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800">
+<body>
 
-    <!-- 密码登录层 -->
-    <div id="loginScreen" class="fixed inset-0 z-50 flex items-center justify-center bg-white">
-        <div class="text-center p-8 max-w-md w-full shadow-2xl rounded-xl border border-gray-100">
-            <h2 class="text-2xl font-bold mb-6 text-blue-800">舟山城投政策库</h2>
-            <input type="password" id="passwordInput" placeholder="请输入访问密码" class="w-full p-3 border border-gray-300 rounded-lg mb-4 text-center focus:ring-2 focus:ring-blue-500 outline-none">
-            <button onclick="checkPassword()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition">进入系统</button>
-            <p id="errorMsg" class="text-red-500 mt-4 hidden">密码错误，请重试</p>
+    <!-- 1. 登录页面 -->
+    <div id="login-box">
+        <h2>舟山城投政策收集库</h2>
+        <input type="password" id="password-input" placeholder="请输入访问密码">
+        <br>
+        <button onclick="checkPassword()">进入系统</button>
+        <p id="error-msg">密码错误，请重试</p>
+    </div>
+
+    <!-- 2. 首页 (目录) -->
+    <div id="page-home" class="page-view">
+        <div class="header">
+            <h1>舟山城投政策收集库</h1>
+        </div>
+        
+        <div class="policy-card" onclick="showPage('page-urban')">
+            <h3>城市更新相关政策</h3>
+            <p>包含老旧小区改造、城市风貌提升、土地盘活等相关文件</p>
+        </div>
+
+        <div class="policy-card" onclick="showPage('page-industry')">
+            <h3>产业发展相关政策</h3>
+            <p>包含产业扶持、海洋经济、园区建设、专项资金等相关文件</p>
         </div>
     </div>
 
-    <!-- 真实内容层 -->
-    <div id="mainContent" class="hidden">
-        <!-- 顶部导航 -->
-        <header class="gradient-bg text-white shadow-lg">
-            <div class="container mx-auto px-6 py-10">
-                <h1 class="text-3xl font-bold mb-2">舟山城投 · 政策汇编</h1>
-                <p class="opacity-80">汇聚城市建设与投资发展核心政策文件</p>
-            </div>
-        </header>
+    <!-- 3. 城市更新政策页 -->
+    <div id="page-urban" class="page-view">
+        <div class="header">
+            <h1>城市更新相关政策</h1>
+            <span class="nav-link" onclick="showPage('page-home')">← 返回首页</span>
+        </div>
 
-        <!-- 内容列表 -->
-        <main class="container mx-auto px-6 py-10">
-            <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                
-                <!-- 政策卡片模板 -->
-                <!-- 你可以复制下面这个 block 来添加更多政策 -->
-                
-                <a href="https://www.zjzwfw.gov.cn/" target="_blank" class="group block bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 hover:-translate-y-1">
-                    <div class="flex justify-between items-start mb-4">
-                        <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">国家级</span>
-                        <svg class="w-5 h-5 text-gray-400 group-hover:text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
-                    </div>
-                    <h3 class="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-700">关于进一步推进城市基础设施投资的指导意见</h3>
-                    <p class="text-gray-500 text-sm mb-4">住建部 / 2025-12-01</p>
-                    <div class="text-sm text-blue-600 font-medium">点击访问官网原文 &rarr;</div>
-                </a>
+        <ul class="policy-list">
+            <li>
+                <a href="https://www.example.com/urban1" target="_blank">舟山市城市更新实施办法（2025年版）</a>
+                <div class="policy-desc">发布单位：舟山市人民政府 | 2025-01-15</div>
+            </li>
+            <li>
+                <a href="https://www.example.com/urban2" target="_blank">关于加快推进城镇老旧小区改造的指导意见</a>
+                <div class="policy-desc">发布单位：舟山市住建局 | 2024-11-20</div>
+            </li>
+            <li>
+                <a href="https://www.example.com/urban3" target="_blank">舟山市主城区风貌提升三年行动计划</a>
+                <div class="policy-desc">发布单位：舟山市自然资源和规划局 | 2024-08-05</div>
+            </li>
+            <!-- 在此处继续添加更多政策 -->
+        </ul>
+    </div>
 
-                <!-- 政策卡片 2 -->
-                <a href="https://www.zhoushan.gov.cn/" target="_blank" class="group block bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 hover:-translate-y-1">
-                    <div class="flex justify-between items-start mb-4">
-                        <span class="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded">舟山市级</span>
-                        <svg class="w-5 h-5 text-gray-400 group-hover:text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
-                    </div>
-                    <h3 class="text-lg font-bold text-gray-900 mb-2 group-hover:text-green-700">舟山市2026年度政府投资项目计划安排</h3>
-                    <p class="text-gray-500 text-sm mb-4">市政府 / 2026-01-15</p>
-                    <div class="text-sm text-green-600 font-medium">点击访问官网原文 &rarr;</div>
-                </a>
+    <!-- 4. 产业发展政策页 -->
+    <div id="page-industry" class="page-view">
+        <div class="header">
+            <h1>产业发展相关政策</h1>
+            <span class="nav-link" onclick="showPage('page-home')">← 返回首页</span>
+        </div>
 
-                <!-- 政策卡片 3 -->
-                <a href="https://zjzs.zjzwfw.gov.cn/" target="_blank" class="group block bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 hover:-translate-y-1">
-                    <div class="flex justify-between items-start mb-4">
-                        <span class="bg-purple-100 text-purple-800 text-xs font-semibold px-2.5 py-0.5 rounded">资金申报</span>
-                        <svg class="w-5 h-5 text-gray-400 group-hover:text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
-                    </div>
-                    <h3 class="text-lg font-bold text-gray-900 mb-2 group-hover:text-purple-700">中央预算内投资专项管理办法</h3>
-                    <p class="text-gray-500 text-sm mb-4">发改委 / 2025-09-20</p>
-                    <div class="text-sm text-purple-600 font-medium">点击访问官网原文 &rarr;</div>
-                </a>
-
-            </div>
-        </main>
+        <ul class="policy-list">
+            <li>
+                <a href="https://www.example.com/ind1" target="_blank">舟山市促进产业高质量发展若干政策</a>
+                <div class="policy-desc">发布单位：舟山市发改委 | 2025-02-01</div>
+            </li>
+            <li>
+                <a href="https://www.example.com/ind2" target="_blank">关于支持海洋经济产业园区建设的实施细则</a>
+                <div class="policy-desc">发布单位：舟山市海洋经济局 | 2024-12-10</div>
+            </li>
+            <li>
+                <a href="https://www.example.com/ind3" target="_blank">舟山市市级产业发展专项资金管理办法</a>
+                <div class="policy-desc">发布单位：舟山市财政局 | 2024-09-15</div>
+            </li>
+            <!-- 在此处继续添加更多政策 -->
+        </ul>
     </div>
 
     <script>
-        // 密码校验逻辑
-        // 警告：此方式仅为防君子不防小人，密码在前端源码中完全可见
-        const PASSWORD = "123456";
-
+        // 密码验证逻辑
         function checkPassword() {
-            const input = document.getElementById('passwordInput').value;
-            if (input === PASSWORD) {
-                document.getElementById('loginScreen').classList.add('hidden');
-                document.getElementById('mainContent').classList.remove('hidden');
+            const input = document.getElementById('password-input').value;
+            const correctPassword = '123456'; // 访问密码
+            
+            if (input === correctPassword) {
+                document.getElementById('login-box').style.display = 'none';
+                document.getElementById('page-home').style.display = 'block'; // 显示首页
+                sessionStorage.setItem('authenticated', 'true'); // 保存登录状态
             } else {
-                document.getElementById('errorMsg').classList.remove('hidden');
+                document.getElementById('error-msg').style.display = 'block';
             }
         }
 
-        // 支持回车登录
-        document.getElementById("passwordInput").addEventListener("keypress", function(event) {
+        // 页面切换逻辑
+        function showPage(pageId) {
+            // 隐藏所有页面
+            const pages = document.querySelectorAll('.page-view');
+            pages.forEach(page => page.style.display = 'none');
+            
+            // 显示指定页面
+            document.getElementById(pageId).style.display = 'block';
+        }
+
+        // 检查是否已登录 (刷新页面后无需重新登录)
+        window.onload = function() {
+            if (sessionStorage.getItem('authenticated') === 'true') {
+                document.getElementById('login-box').style.display = 'none';
+                document.getElementById('page-home').style.display = 'block';
+            }
+        };
+
+        // 支持回车键登录
+        document.getElementById("password-input").addEventListener("keypress", function(event) {
             if (event.key === "Enter") {
                 checkPassword();
             }
