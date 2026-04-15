@@ -4,582 +4,593 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>舟山城投政策资料库</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#1e40af',
-                        secondary: '#3b82f6',
-                        accent: '#60a5fa',
-                        dark: '#1e293b',
-                        light: '#f8fafc'
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', 'sans-serif'],
-                    },
-                }
-            }
+    <style>
+        :root {
+            --primary-color: #0056b3;
+            --secondary-color: #004494;
+            --accent-color: #e6f0ff;
+            --text-color: #333;
+            --text-light: #666;
+            --bg-color: #f4f6f9;
+            --card-bg: #ffffff;
+            --shadow: 0 4px 6px rgba(0,0,0,0.05);
+            --shadow-hover: 0 10px 20px rgba(0,0,0,0.1);
         }
-    </script>
-    <style type="text/tailwindcss">
-        @layer utilities {
-            .content-auto {
-                content-visibility: auto;
-            }
-            .glass-effect {
-                backdrop-filter: blur(10px);
-                background-color: rgba(255, 255, 255, 0.85);
-            }
-            .card-hover {
-                transition: all 0.3s ease;
-            }
-            .card-hover:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            }
-            .text-balance {
-                text-wrap: balance;
-            }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* 密码屏样式 */
+        #lock-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .lock-box {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        .lock-box h2 { margin-bottom: 20px; color: var(--primary-color); }
+        
+        input[type="password"] {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            letter-spacing: 4px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input[type="password"]:focus { border-color: var(--primary-color); }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover { background-color: var(--secondary-color); }
+
+        .error-msg { color: red; margin-top: 10px; display: none; }
+
+        /* 主内容样式 */
+        #main-content { display: none; }
+
+        header {
+            background: linear-gradient(to right, var(--secondary-color), var(--primary-color));
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+
+        header h1 { font-size: 2rem; margin-bottom: 10px; }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .disclaimer {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            color: #856404;
+        }
+
+        .section-title {
+            margin: 40px 0 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--primary-color);
+            color: var(--secondary-color);
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-title::before {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 24px;
+            background: var(--primary-color);
+            margin-right: 12px;
+            border-radius: 4px;
+        }
+
+        .policy-card {
+            background: var(--card-bg);
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border-left: 5px solid transparent;
+        }
+
+        .policy-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+            border-left-color: var(--primary-color);
+        }
+
+        .policy-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .policy-title a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .policy-title a:hover { color: var(--secondary-color); text-decoration: underline; }
+
+        .meta-info {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 12px;
+        }
+
+        .meta-tag {
+            display: inline-block;
+            background: var(--accent-color);
+            color: var(--primary-color);
+            padding: 3px 10px;
+            border-radius: 4px;
+            margin-right: 10px;
+            font-weight: 500;
+        }
+
+        .policy-desc {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        .subsection-title {
+            margin: 30px 0 15px 0;
+            font-size: 1.2rem;
+            color: var(--text-color);
+            border-left: 4px solid #adb5bd;
+            padding-left: 10px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 600px) {
+            header h1 { font-size: 1.5rem; }
+            .policy-card { padding: 15px; }
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
-    <!-- 密码验证页面 -->
-    <div id="password-page" class="min-h-screen flex items-center justify-center p-4">
-        <div class="glass-effect rounded-2xl shadow-2xl p-8 w-full max-w-md">
-            <div class="text-center mb-8">
-                <div class="w-20 h-20 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i class="fa fa-file-text-o text-white text-3xl"></i>
-                </div>
-                <h1 class="text-2xl font-bold text-dark mb-2">舟山城投政策资料库</h1>
-                <p class="text-gray-600">请输入访问密码以继续</p>
-            </div>
-            
-            <form id="password-form" class="space-y-6">
-                <div>
-                    <label for="password" class="block text-sm font-medium text-gray-700 mb-2">访问密码</label>
-                    <div class="relative">
-                        <input type="password" id="password" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition" placeholder="请输入密码" required>
-                        <button type="button" id="toggle-password" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700">
-                            <i class="fa fa-eye"></i>
-                        </button>
-                    </div>
-                </div>
-                
-                <div id="error-message" class="text-red-500 text-sm hidden">密码错误，请重新输入</div>
-                
-                <button type="submit" class="w-full bg-primary hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition duration-300 flex items-center justify-center">
-                    <i class="fa fa-unlock-alt mr-2"></i> 进入资料库
-                </button>
-            </form>
+<body>
+
+    <!-- 密码锁定屏幕 -->
+    <div id="lock-screen">
+        <div class="lock-box">
+            <h2>舟山城投政策资料库</h2>
+            <p>请输入访问密码</p>
+            <input type="password" id="password-input" placeholder="******" maxlength="6">
+            <button onclick="checkPassword()">进入系统</button>
+            <p id="error-msg" class="error-msg">密码错误，请重试</p>
         </div>
     </div>
 
-    <!-- 主内容页面 -->
-    <div id="main-content" class="hidden">
-        <!-- 导航栏 -->
-        <nav class="glass-effect sticky top-0 z-50 shadow-md">
-            <div class="container mx-auto px-4 py-4">
-                <div class="flex justify-between items-center">
-                    <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-                            <i class="fa fa-file-text-o text-white"></i>
-                        </div>
-                        <h1 class="text-xl font-bold text-dark">舟山城投政策资料库</h1>
-                    </div>
-                    <div class="flex items-center space-x-4">
-                        <button id="search-toggle" class="text-gray-600 hover:text-primary transition">
-                            <i class="fa fa-search text-lg"></i>
-                        </button>
-                        <button id="back-to-top" class="text-gray-600 hover:text-primary transition hidden">
-                            <i class="fa fa-arrow-up text-lg"></i>
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- 搜索框 -->
-                <div id="search-container" class="mt-4 hidden">
-                    <div class="relative">
-                        <input type="text" id="search-input" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition" placeholder="搜索政策文件、文号或关键词...">
-                        <button class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700">
-                            <i class="fa fa-search"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </nav>
+    <!-- 主要内容 -->
+    <div id="main-content">
+        <header>
+            <h1>舟山城投政策资料库</h1>
+            <p>内部学习与工作参考平台</p>
+        </header>
 
-        <!-- 主要内容 -->
-        <main class="container mx-auto px-4 py-8">
+        <div class="container">
             <!-- 免责声明 -->
-            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-8 rounded-r-lg">
-                <div class="flex">
-                    <div class="flex-shrink-0">
-                        <i class="fa fa-exclamation-triangle text-yellow-400"></i>
-                    </div>
-                    <div class="ml-3">
-                        <p class="text-sm text-yellow-700">
-                            <strong>免责声明：</strong>本网页仅为网络公开政策资料的收集整理平台，所有政策文件均来自政府官方网站。相关内部涉密文件请勿上传，如有侵权请联系我们删除。
-                        </p>
-                    </div>
-                </div>
+            <div class="disclaimer">
+                <strong>⚠️ 免责声明</strong><br>
+                本网页仅为网络公开政策资料的收集整理平台，所有政策文件均来自政府官方网站。相关内部涉密文件请勿上传，如有侵权请联系我们删除。本网站仅用于内部学习和工作参考，所有内容均来自政府官方网站。
             </div>
 
-            <!-- 统计卡片 -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-                <div class="glass-effect rounded-xl p-6 card-hover">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-gray-500 text-sm">城市更新政策</p>
-                            <h3 class="text-3xl font-bold text-primary">4</h3>
-                        </div>
-                        <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                            <i class="fa fa-building text-primary text-xl"></i>
-                        </div>
-                    </div>
+            <!-- 一、城市更新相关政策 -->
+            <div class="section-title">一、城市更新相关政策</div>
+
+            <div class="policy-card">
+                <div class="policy-title">
+                    <a href="https://www.wenzhou.gov.cn/art/2024/11/11/art_1229117830_2036125.html" target="_blank">
+                        温州市人民政府办公室印发关于有序推进温州市区中心城区工业用地功能转变指导意见的通知（温政办〔2024〕55 号）
+                    </a>
                 </div>
-                
-                <div class="glass-effect rounded-xl p-6 card-hover">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-gray-500 text-sm">拆迁安置政策</p>
-                            <h3 class="text-3xl font-bold text-green-600">6</h3>
-                        </div>
-                        <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                            <i class="fa fa-home text-green-600 text-xl"></i>
-                        </div>
-                    </div>
+                <div class="meta-info">
+                    <span class="meta-tag">2024-11-11</span>
+                    <span>温州市人民政府办公室</span>
                 </div>
-                
-                <div class="glass-effect rounded-xl p-6 card-hover">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-gray-500 text-sm">小微园区政策</p>
-                            <h3 class="text-3xl font-bold text-purple-600">3</h3>
-                        </div>
-                        <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
-                            <i class="fa fa-industry text-purple-600 text-xl"></i>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="glass-effect rounded-xl p-6 card-hover">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-gray-500 text-sm">其他政策</p>
-                            <h3 class="text-3xl font-bold text-orange-600">1</h3>
-                        </div>
-                        <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
-                            <i class="fa fa-file-text text-orange-600 text-xl"></i>
-                        </div>
-                    </div>
-                </div>
+                <div class="policy-desc">指导温州市区中心城区工业用地有序实施功能转变，优化城市空间布局，促进产业转型升级。</div>
             </div>
 
-            <!-- 政策分类 -->
-            <div class="space-y-12">
-                <!-- 城市更新相关政策 -->
-                <section id="section-1">
-                    <div class="flex items-center mb-6">
-                        <div class="w-1 h-8 bg-primary rounded mr-4"></div>
-                        <h2 class="text-2xl font-bold text-dark">一、城市更新相关政策</h2>
-                    </div>
-                    
-                    <div class="grid grid-cols-1 gap-6">
-                        <a href="https://www.wenzhou.gov.cn/art/2024/11/11/art_1229117830_2036125.html" target="_blank" class="glass-effect rounded-xl p-6 card-hover block">
-                            <div class="flex items-start">
-                                <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-4 flex-shrink-0 mt-1">
-                                    <i class="fa fa-file-pdf-o text-primary"></i>
-                                </div>
-                                <div class="flex-1">
-                                    <h3 class="font-semibold text-dark mb-2 text-balance">温州市人民政府办公室印发关于有序推进温州市区中心城区工业用地功能转变指导意见的通知</h3>
-                                    <div class="flex flex-wrap gap-2 mb-2">
-                                        <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">温政办〔2024〕55号</span>
-                                        <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">2024-10-31</span>
-                                        <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">温州市人民政府办公室</span>
-                                    </div>
-                                    <p class="text-sm text-gray-600">明确工业用地功能转变分为永久改变和临时改变两种形式，划定三类更新区域，规范办理程序和出让金收取标准，禁止退改为住宅（保障性租赁住房除外）。</p>
-                                </div>
-                            </div>
-                        </a>
-                        
-                        <a href="http://www.rugao.gov.cn/rgsrmzf/yx2/content/4b5e017a-72e6-4a84-9675-e1fd10ec649f.htm" target="_blank" class="glass-effect rounded-xl p-6 card-hover block">
-                            <div class="flex items-start">
-                                <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-4 flex-shrink-0 mt-1">
-                                    <i class="fa fa-file-text-o text-primary"></i>
-                                </div>
-                                <div class="flex-1">
-                                    <h3 class="font-semibold text-dark mb-2 text-balance">市政府办公室关于印发《关于加快推进全市"退二优二"工作的实施意见》的通知</h3>
-                                    <div class="flex flex-wrap gap-2 mb-2">
-                                        <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">皋政办规〔2024〕1号</span>
-                                        <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">2024-01-10</span>
-                                        <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">如皋市人民政府办公室</span>
-                                    </div>
-                                    <p class="text-sm text-gray-600">引导低效工业企业转型或退出，引进优势企业实施先进制造业项目，通过原地更新、新上项目、收购储备等途径盘活低效工业用地，提高亩均产出水平。</p>
-                                </div>
-                            </div>
-                        </a>
-                        
-                        <a href="https://www.songjiang.gov.cn/govxxgk/SHSJ2/2022-10-27/2c29acaa-a234-47af-a3c3-3da8586acc59.html" target="_blank" class="glass-effect rounded-xl p-6 card-hover block">
-                            <div class="flex items-start">
-                                <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-4 flex-shrink-0 mt-1">
-                                    <i class="fa fa-file-text-o text-primary"></i>
-                                </div>
-                                <div class="flex-1">
-                                    <h3 class="font-semibold text-dark mb-2 text-balance">松江区关于加快产业结构调整推进存量工业用地高质量盘活利用产业政策的实施细则</h3>
-                                    <div class="flex flex-wrap gap-2 mb-2">
-                                        <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">沪松经〔2022〕263号</span>
-                                        <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">2022-10-27</span>
-                                        <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">上海市松江区经委、财政局</span>
-                                    </div>
-                                    <p class="text-sm text-gray-600">对收储再开发、存量嫁接导入、收购盘活、存量土地厂房再利用等项目给予资金补贴和奖励，重点支持G60科创走廊产业导向的优质项目发展。</p>
-                                </div>
-                            </div>
-                        </a>
-                        
-                        <a href="http://www.miluo.gov.cn/25221/25222/26762/26772/27514/content_1496414.html" target="_blank" class="glass-effect rounded-xl p-6 card-hover block">
-                            <div class="flex items-start">
-                                <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-4 flex-shrink-0 mt-1">
-                                    <i class="fa fa-file-text-o text-primary"></i>
-                                </div>
-                                <div class="flex-1">
-                                    <h3 class="font-semibold text-dark mb-2 text-balance">湖南汨罗循环经济产业园区工业用地"退二进三"工作实施方案</h3>
-                                    <div class="flex flex-wrap gap-2 mb-2">
-                                        <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">2019-10-08</span>
-                                        <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">湖南汨罗循环经济产业园区管委会</span>
-                                    </div>
-                                    <p class="text-sm text-gray-600">明确园区"退二进三"实施范围和认定条件，通过就地转型、收购储备、兼并重组、异地置换等方式推动低效工业用地退出，发展第三产业。</p>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </section>
-
-                <!-- 工业厂房拆迁安置政策 -->
-                <section id="section-2">
-                    <div class="flex items-center mb-6">
-                        <div class="w-1 h-8 bg-green-600 rounded mr-4"></div>
-                        <h2 class="text-2xl font-bold text-dark">二、工业厂房拆迁安置政策</h2>
-                    </div>
-                    
-                    <div class="grid grid-cols-1 gap-6">
-                        <a href="https://www.gov.cn/gongbao/content/2011/content_1792046.htm" target="_blank" class="glass-effect rounded-xl p-6 card-hover block">
-                            <div class="flex items-start">
-                                <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mr-4 flex-shrink-0 mt-1">
-                                    <i class="fa fa-gavel text-green-600"></i>
-                                </div>
-                                <div class="flex-1">
-                                    <h3 class="font-semibold text-dark mb-2 text-balance">国有土地上房屋征收与补偿条例</h3>
-                                    <div class="flex flex-wrap gap-2 mb-2">
-                                        <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">国务院令第590号</span>
-                                        <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">2011-01-21</span>
-                                        <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">国务院</span>
-                                    </div>
-                                    <p class="text-sm text-gray-600">全国性房屋征收与补偿的基础性法规，明确征收主体、补偿范围（房屋价值、搬迁费、停产停业损失）、补偿方式和法定程序，保障被征收人合法权益。</p>
-                                </div>
-                            </div>
-                        </a>
-                        
-                        <a href="https://www.zjrd.gov.cn/sylf/fggg/202312/t20231211_160582.shtml" target="_blank" class="glass-effect rounded-xl p-6 card-hover block">
-                            <div class="flex items-start">
-                                <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mr-4 flex-shrink-0 mt-1">
-                                    <i class="fa fa-file-text-o text-green-600"></i>
-                                </div>
-                                <div class="flex-1">
-                                    <h3 class="font-semibold text-dark mb-2 text-balance">浙江省国有土地上房屋征收与补偿条例（2020年修正）</h3>
-                                    <div class="flex flex-wrap gap-2 mb-2">
-                                        <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">2014-05-28 发布，2020-09-24 修正</span>
-                                        <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">浙江省人大常委会</span>
-                                    </div>
-                                    <p class="text-sm text-gray-600">结合浙江实际细化征收补偿规定，明确最低补偿建筑面积（≥45㎡）、过渡期限、停产停业损失补偿标准（不低于房屋价值5%）和旧城区改建签约比例要求。</p>
-                                </div>
-                            </div>
-                        </a>
-                        
-                        <a href="https://www.shengsi.gov.cn/art/2022/10/13/art_1229667940_59031745.html" target="_blank" class="glass-effect rounded-xl p-6 card-hover block">
-                            <div class="flex items-start">
-                                <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mr-4 flex-shrink-0 mt-1">
-                                    <i class="fa fa-file-text-o text-green-600"></i>
-                                </div>
-                                <div class="flex-1">
-                                    <h3 class="font-semibold text-dark mb-2 text-balance">舟山市人民政府关于舟山市国有土地上工业房屋征收与补偿的指导意见（试行）</h3>
-                                    <div class="flex flex-wrap gap-2 mb-2">
-                                        <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">舟政发〔2014〕17号</span>
-                                        <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">2014-04-17</span>
-                                        <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">舟山市人民政府</span>
-                                    </div>
-                                    <p class="text-sm text-gray-600">舟山市工业房屋征收补偿的指导性文件，采用房地分离评估方法，明确设备搬迁补偿标准、停产停业损失（不高于评估总额5%）和签约搬迁奖励机制。</p>
-                                </div>
-                            </div>
-                        </a>
-                        
-                        <a href="http://www.dinghai.gov.cn/zfxxgk/attach/-1/1508191705470554746.pdf" target="_blank" class="glass-effect rounded-xl p-6 card-hover block">
-                            <div class="flex items-start">
-                                <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mr-4 flex-shrink-0 mt-1">
-                                    <i class="fa fa-file-pdf-o text-green-600"></i>
-                                </div>
-                                <div class="flex-1">
-                                    <h3 class="font-semibold text-dark mb-2 text-balance">定海区国有土地上工业用房征收与补偿实施细则（试行）</h3>
-                                    <div class="flex flex-wrap gap-2 mb-2">
-                                        <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">定党政办发〔2014〕200号</span>
-                                        <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">2014-08-05</span>
-                                        <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">定海区委、区政府办公室</span>
-                                    </div>
-                                    <p class="text-sm text-gray-600">定海区域工业用房征收的具体实施细则，增加非工业产权置换（办公、商务、商业用房）方式，明确未经登记建筑和改变用途建筑的认定处理办法。</p>
-                                </div>
-                            </div>
-                        </a>
-                        
-                        <a href="https://www.linhai.gov.cn/art/2026/1/9/art_1229467614_59092685.html" target="_blank" class="glass-effect rounded-xl p-6 card-hover block">
-                            <div class="flex items-start">
-                                <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mr-4 flex-shrink-0 mt-1">
-                                    <i class="fa fa-file-text-o text-green-600"></i>
-                                </div>
-                                <div class="flex-1">
-                                    <h3 class="font-semibold text-dark mb-2 text-balance">临海市国有土地上工业用房征收与补偿实施办法</h3>
-                                    <div class="flex flex-wrap gap-2 mb-2">
-                                        <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">2026-01-09</span>
-                                        <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">临海市人民政府办公室</span>
-                                    </div>
-                                    <p class="text-sm text-gray-600">提供标准厂房置换、土地置换和功能置换三种产权调换方式，根据"亩均论英雄"评价结果确定置换比例（最高1:1.5），完善奖励补助机制。</p>
-                                </div>
-                            </div>
-                        </a>
-                        
-                        <a href="https://www.wenzhou.gov.cn/art/2025/4/30/art_1229117830_2038999.html" target="_blank" class="glass-effect rounded-xl p-6 card-hover block">
-                            <div class="flex items-start">
-                                <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mr-4 flex-shrink-0 mt-1">
-                                    <i class="fa fa-file-text-o text-green-600"></i>
-                                </div>
-                                <div class="flex-1">
-                                    <h3 class="font-semibold text-dark mb-2 text-balance">温州市人民政府办公室关于印发温州市区征收国有土地上工业用房补偿办法（试行）的通知</h3>
-                                    <div class="flex flex-wrap gap-2 mb-2">
-                                        <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">温政办〔2025〕26号</span>
-                                        <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">2025-04-24</span>
-                                        <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">温州市人民政府办公室</span>
-                                    </div>
-                                    <p class="text-sm text-gray-600">最新工业用房补偿办法，明确土地置换和工业用房调换条件，建立市域跨行政区域安置协调机制，规范过渡期限和临时安置费计算方式。</p>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </section>
-
-                <!-- 小微园区相关政策 -->
-                <section id="section-3">
-                    <div class="flex items-center mb-6">
-                        <div class="w-1 h-8 bg-purple-600 rounded mr-4"></div>
-                        <h2 class="text-2xl font-bold text-dark">三、小微园区相关政策</h2>
-                    </div>
-                    
-                    <div class="grid grid-cols-1 gap-6">
-                        <div class="glass-effect rounded-xl p-6 card-hover">
-                            <div class="flex items-start">
-                                <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center mr-4 flex-shrink-0 mt-1">
-                                    <i class="fa fa-file-text-o text-purple-600"></i>
-                                </div>
-                                <div class="flex-1">
-                                    <h3 class="font-semibold text-dark mb-2 text-balance">舟山市产业转型升级工作领导小组办公室关于印发《舟山市小微企业园绩效评价办法（试行）》的通知</h3>
-                                    <div class="flex flex-wrap gap-2 mb-2">
-                                        <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">待补充文号</span>
-                                        <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">待补充时间</span>
-                                        <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">舟山市产业转型升级办</span>
-                                    </div>
-                                    <p class="text-sm text-gray-600">建立小微企业园绩效评价体系，从发展规模、产业集聚、服务能力、运营管理等方面进行综合评价，引导小微企业园高质量发展。</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <a href="http://www.dinghai.gov.cn/module/download/downfile.jsp?classid=0&filename=658cb5f01ebb466386e5ee080e3870a3.pdf" target="_blank" class="glass-effect rounded-xl p-6 card-hover block">
-                            <div class="flex items-start">
-                                <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center mr-4 flex-shrink-0 mt-1">
-                                    <i class="fa fa-file-pdf-o text-purple-600"></i>
-                                </div>
-                                <div class="flex-1">
-                                    <h3 class="font-semibold text-dark mb-2 text-balance">关于加快小微企业园高质量发展的实施意见</h3>
-                                    <div class="flex flex-wrap gap-2 mb-2">
-                                        <span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">舟政办发〔2018〕146号</span>
-                                        <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">2018年</span>
-                                        <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">舟山市人民政府办公室</span>
-                                    </div>
-                                    <p class="text-sm text-gray-600">明确舟山市小微企业园建设目标、规划布局、建设标准和扶持政策，支持小微企业集聚发展，提升产业竞争力，促进大众创业万众创新。</p>
-                                </div>
-                            </div>
-                        </a>
-                        
-                        <a href="https://yyzcy.87188718.com/FourFlat/WebPolicyCloud/PrintWindow.aspx?id=230521" target="_blank" class="glass-effect rounded-xl p-6 card-hover block">
-                            <div class="flex items-start">
-                                <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center mr-4 flex-shrink-0 mt-1">
-                                    <i class="fa fa-file-text-o text-purple-600"></i>
-                                </div>
-                                <div class="flex-1">
-                                    <h3 class="font-semibold text-dark mb-2 text-balance">中共浙江省委办公厅 浙江省人民政府办公厅关于加快小微企业园高质量发展的实施意见</h3>
-                                    <div class="flex flex-wrap gap-2 mb-2">
-                                        <span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">浙委办发〔2018〕59号</span>
-                                        <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">2018年</span>
-                                        <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">浙江省委、省政府办公厅</span>
-                                    </div>
-                                    <p class="text-sm text-gray-600">全省小微企业园建设的纲领性文件，提出总体要求和主要任务，从规划、土地、资金、人才等方面给予政策支持，推动小微企业园提质增效。</p>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </section>
-
-                <!-- 其他政策 -->
-                <section id="section-4">
-                    <div class="flex items-center mb-6">
-                        <div class="w-1 h-8 bg-orange-600 rounded mr-4"></div>
-                        <h2 class="text-2xl font-bold text-dark">四、其他政策</h2>
-                    </div>
-                    
-                    <div class="grid grid-cols-1 gap-6">
-                        <a href="https://www.gov.cn/zhengce/zhengceku/202603/content_7063082.htm" target="_blank" class="glass-effect rounded-xl p-6 card-hover block">
-                            <div class="flex items-start">
-                                <div class="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center mr-4 flex-shrink-0 mt-1">
-                                    <i class="fa fa-file-text-o text-orange-600"></i>
-                                </div>
-                                <div class="flex-1">
-                                    <h3 class="font-semibold text-dark mb-2 text-balance">自然资源部 国家林业和草原局关于进一步做好自然资源要素保障的通知</h3>
-                                    <div class="flex flex-wrap gap-2 mb-2">
-                                        <span class="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded">自然资发〔2026〕38号</span>
-                                        <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">2026-03-05</span>
-                                        <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">自然资源部、国家林草局</span>
-                                    </div>
-                                    <p class="text-sm text-gray-600">为"十五五"规划重点建设项目提供自然资源要素保障，优化用地审批流程，完善耕地占补平衡机制，统筹存量和增量建设用地促进内涵式发展。</p>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </section>
-
-                <!-- 产业发展相关信息收集 -->
-                <section id="section-5">
-                    <div class="flex items-center mb-6">
-                        <div class="w-1 h-8 bg-indigo-600 rounded mr-4"></div>
-                        <h2 class="text-2xl font-bold text-dark">五、产业发展相关信息收集</h2>
-                    </div>
-                    
-                    <div class="glass-effect rounded-xl p-8 text-center">
-                        <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <i class="fa fa-plus text-indigo-600 text-2xl"></i>
-                        </div>
-                        <h3 class="text-lg font-semibold text-dark mb-2">持续更新中</h3>
-                        <p class="text-gray-500">本板块将持续收集和整理产业发展相关的重要信息、行业报告和政策文件</p>
-                    </div>
-                </section>
+            <div class="policy-card">
+                <div class="policy-title">
+                    <a href="http://www.rugao.gov.cn/rgsrmzf/yx2/content/4b5e017a-72e6-4a84-9675-e1fd10ec649f.htm" target="_blank">
+                        市政府办公室关于印发《关于加快推进全市 "退二优二" 工作的实施意见》的通知（皋政办规〔2024〕1 号）
+                    </a>
+                </div>
+                <div class="meta-info">
+                    <span class="meta-tag">2024年</span>
+                    <span>如皋市人民政府办公室</span>
+                </div>
+                <div class="policy-desc">加快推进"退二优二"工作，优化工业用地布局，提升土地利用效率，推动工业经济高质量发展。</div>
             </div>
-        </main>
 
-        <!-- 页脚 -->
-        <footer class="glass-effect mt-16 py-8">
-            <div class="container mx-auto px-4 text-center">
-                <p class="text-gray-600 mb-2">舟山城投政策资料库 © 2026</p>
-                <p class="text-sm text-gray-500">本网站仅用于内部学习和工作参考，所有内容均来自政府官方网站</p>
+            <div class="policy-card">
+                <div class="policy-title">
+                    <a href="https://www.songjiang.gov.cn/govxxgk/SHSJ2/2022-10-27/2c29acaa-a234-47af-a3c3-3da8586acc59.html" target="_blank">
+                        松江区关于加快产业结构调整推进存量工业用地高质量盘活利用产业政策的实施细则
+                    </a>
+                </div>
+                <div class="meta-info">
+                    <span class="meta-tag">2022-10-27</span>
+                    <span>上海市松江区经济委员会</span>
+                </div>
+                <div class="policy-desc">针对收储再开发、存量嫁接、收购盘活等多种模式提供资金平衡补贴与奖励，支持G60科创走廊产业导向。</div>
             </div>
-        </footer>
+
+            <div class="policy-card">
+                <div class="policy-title">
+                    <a href="http://www.miluo.gov.cn/25221/25222/26762/26772/27514/content_1496414.html" target="_blank">
+                        湖南汨罗循环经济产业园区工业用地“退二进三”工作实施方案
+                    </a>
+                </div>
+                <div class="meta-info">
+                    <span class="meta-tag">2019-10-08</span>
+                    <span>湖南汨罗循环经济产业园区</span>
+                </div>
+                <div class="policy-desc">通过就地转型、收购储备、兼并重组、异地置换等方式，优化园区功能布局，加快产城融合。</div>
+            </div>
+
+            <div class="policy-card">
+                <div class="policy-title">
+                    <a href="https://www.gov.cn/zhengce/zhengceku/202603/content_7063082.htm" target="_blank">
+                        自然资源部 国家林业和草原局关于进一步做好自然资源要素保障的通知（自然资发〔2026〕38号）
+                    </a>
+                </div>
+                <div class="meta-info">
+                    <span class="meta-tag">2026-03-05</span>
+                    <span>自然资源部、国家林草局</span>
+                </div>
+                <div class="policy-desc">做好“十五五”规划重点建设项目要素保障，涉及规划许可、用地审批、耕地占补平衡、陆海统筹等。</div>
+            </div>
+
+            <!-- 二、工业厂房拆迁安置政策 -->
+            <div class="section-title">二、工业厂房拆迁安置政策</div>
+
+            <div class="policy-card">
+                <div class="policy-title">
+                    <a href="https://www.gov.cn/gongbao/content/2011/content_1792046.htm" target="_blank">
+                        国有土地上房屋征收与补偿条例（国务院令第590号）
+                    </a>
+                </div>
+                <div class="meta-info">
+                    <span class="meta-tag">2011-01-21</span>
+                    <span>国务院</span>
+                </div>
+                <div class="policy-desc">规范国有土地上房屋征收与补偿活动，维护公共利益，保障被征收房屋所有权人的合法权益的国家级纲领。</div>
+            </div>
+
+            <div class="policy-card">
+                <div class="policy-title">
+                    <a href="https://www.zjrd.gov.cn/sylf/fggg/202312/t20231211_160582.shtml" target="_blank">
+                        浙江省国有土地上房屋征收与补偿条例（2020 年修正）
+                    </a>
+                </div>
+                <div class="meta-info">
+                    <span class="meta-tag">2020-09-24</span>
+                    <span>浙江省人大常委会</span>
+                </div>
+                <div class="policy-desc">结合浙江省实际情况，对国有土地上房屋征收的程序、补偿标准、评估机构选定等进行了细化规定。</div>
+            </div>
+
+            <div class="policy-card">
+                <div class="policy-title">
+                    <a href="https://www.shengsi.gov.cn/art/2022/10/13/art_1229667940_59031745.html" target="_blank">
+                        舟山市人民政府关于舟山市国有土地上工业房屋征收与补偿的指导意见（试行）（舟政发〔2014〕17 号）
+                    </a>
+                </div>
+                <div class="meta-info">
+                    <span class="meta-tag">2014-04-17</span>
+                    <span>舟山市人民政府</span>
+                </div>
+                <div class="policy-desc">规范舟山市工业房屋征收，采取房地分离评估，包含土地、建筑物、设备及停产停业损失补偿。</div>
+            </div>
+
+            <div class="policy-card">
+                <div class="policy-title">
+                    <a href="http://www.dinghai.gov.cn/zfxxgk/attach/-1/1508191705470554746.pdf" target="_blank">
+                        定海区国有土地上工业用房征收与补偿实施细则（试行）（定党政办发〔2014〕200 号）
+                    </a>
+                </div>
+                <div class="meta-info">
+                    <span class="meta-tag">2014-08-05</span>
+                    <span>舟山市定海区委区政府办公室</span>
+                </div>
+                <div class="policy-desc">定海区具体执行细则，包含工业及非工业产权置换方式，明确临时安置费及奖励机制。</div>
+            </div>
+
+            <div class="policy-card">
+                <div class="policy-title">
+                    <a href="https://www.linhai.gov.cn/art/2026/1/9/art_1229467614_59092685.html" target="_blank">
+                        临海市国有土地上工业用房征收与补偿实施办法
+                    </a>
+                </div>
+                <div class="meta-info">
+                    <span class="meta-tag">2026-01-09</span>
+                    <span>临海市人民政府办公室</span>
+                </div>
+                <div class="policy-desc">提供标准厂房置换、土地置换和功能置换三种方式，结合“亩均论英雄”评估结果配置资源。</div>
+            </div>
+
+            <div class="policy-card">
+                <div class="policy-title">
+                    <a href="https://www.wenzhou.gov.cn/art/2025/4/30/art_1229117830_2038999.html" target="_blank">
+                        温州市人民政府办公室关于印发温州市区征收国有土地上工业用房补偿办法（试行）的通知
+                    </a>
+                </div>
+                <div class="meta-info">
+                    <span class="meta-tag">2025-04-24</span>
+                    <span>温州市人民政府办公室</span>
+                </div>
+                <div class="policy-desc">2025年最新试行办法，包含土地置换、工业用房调换及功能置换，明确跨区域安置政策。</div>
+            </div>
+
+            <!-- 三、小微园区相关政策 -->
+            <div class="section-title">三、小微园区相关政策</div>
+            
+            <div class="policy-card">
+                <div class="policy-title">中共浙江省委办公厅 浙江省人民政府办公厅关于加快小微企业园高质量发展的实施意见（浙委办发〔2018〕59 号）</div>
+                <div class="meta-info">
+                    <span class="meta-tag">2018年</span>
+                    <span>浙江省委办公厅、省政府办公厅</span>
+                </div>
+                <div class="policy-desc">浙江省层面指导小微企业园建设的核心政策，推动小微企业集聚集约发展。</div>
+            </div>
+
+            <div class="policy-card">
+                <div class="policy-title">关于加快小微企业园高质量发展的实施意见（舟政办发〔2018〕146号）</div>
+                <div class="meta-info">
+                    <span class="meta-tag">2018年</span>
+                    <span>舟山市人民政府办公室</span>
+                </div>
+                <div class="policy-desc">结合舟山实际，贯彻落实省级政策，推进本地小微企业园高质量发展。</div>
+            </div>
+
+            <!-- 四、循环经济产业政策 -->
+            <div class="section-title">四、循环经济产业政策</div>
+
+            <div class="policy-card">
+                <div class="policy-title">
+                    <a href="https://www.zhoushan.gov.cn/art/2022/6/16/art_1229896206_2581208.html" target="_blank">
+                        关于印发《舟山市建筑垃圾管理办法》的通知（舟政发〔2022〕9号）
+                    </a>
+                </div>
+                <div class="meta-info">
+                    <span class="meta-tag">2022-06-10</span>
+                    <span>舟山市人民政府</span>
+                </div>
+                <div class="policy-desc">加强建筑垃圾管理，对产生、收集、运输、利用、处置全流程进行规范，明确陆海联合监管机制。</div>
+            </div>
+
+            <div class="policy-card">
+                <div class="policy-title">
+                    <a href="https://www.zhoushan.gov.cn/col/col1229895779/art/2022/art_503af9d28eccad7dd1661e40fc394911.html" target="_blank">
+                        舟山市人民政府办公室关于印发舟山市“无废城市”建设实施方案（2022-2025年）的通知
+                    </a>
+                </div>
+                <div class="meta-info">
+                    <span class="meta-tag">2022-11-16</span>
+                    <span>舟山市人民政府办公室</span>
+                </div>
+                <div class="policy-desc">推动工业、农业、生活、建筑、海洋等各领域固体废物减量化和资源化，建设“无废城市”。</div>
+            </div>
+
+            <div class="policy-card">
+                <div class="policy-title">
+                    <a href="https://www.zhoushan.gov.cn/art/2025/9/26/art_1229295369_1667774.html" target="_blank">
+                        关于印发《关于进一步强化舟山市建筑垃圾综合利用产品推广应用的实施方案》的通知
+                    </a>
+                </div>
+                <div class="meta-info">
+                    <span class="meta-tag">2025-09-26</span>
+                    <span>舟山市城管局等多部门</span>
+                </div>
+                <div class="policy-desc">强化建筑垃圾资源化利用产品的推广应用，促进循环经济发展。</div>
+            </div>
+
+            <!-- 五、产业发展相关信息收集 -->
+            <div class="section-title">五、产业发展相关信息收集</div>
+
+            <div class="subsection-title">（一）低空经济产业</div>
+
+            <div class="policy-card">
+                <div class="policy-title">
+                    <a href="http://gxq.zhoushan.gov.cn/col/col1521745/art/2026/art_6f04e0db72274d6badda5e1b1b2e48c3.html" target="_blank">
+                        陈重专题调研低空经济
+                    </a>
+                </div>
+                <div class="meta-info">
+                    <span class="meta-tag">2026-04-14</span>
+                    <span>舟山高新技术产业园区管委会</span>
+                </div>
+                <div class="policy-desc">市委书记调研普陀快递物流共配中心和高新区未来产业先导基地，强调打造海洋特色区域低空经济发展高地，推进无人机 "舟山研发、舟山制造"。</div>
+            </div>
+
+            <div class="policy-card">
+                <div class="policy-title">
+                    <a href="https://www.zhoushan.gov.cn/art/2025/8/28/art_1229749525_59304747.html" target="_blank">
+                        全市低空经济发展会议举行
+                    </a>
+                </div>
+                <div class="meta-info">
+                    <span class="meta-tag">2025-08-28</span>
+                    <span>舟山市人民政府</span>
+                </div>
+                <div class="policy-desc">明确"一核两线三统一四张网五中心"总体思路，力争 2027 年实现全域低空智能网联基站全覆盖、50 条航线全域畅联。</div>
+            </div>
+
+            <div class="policy-card">
+                <div class="policy-title">
+                    <a href="https://jtyst.zj.gov.cn/art/2025/7/11/art_1229304975_59042186.html" target="_blank">
+                        舟山聚力打造低空经济海岛发展样板
+                    </a>
+                </div>
+                <div class="meta-info">
+                    <span class="meta-tag">2025-07-11</span>
+                    <span>浙江省交通运输厅</span>
+                </div>
+                <div class="policy-desc">普陀、岱山、嵊泗三地入选省低空经济 "先飞区" 试点，是全省覆盖面最广的地级市，2026 年 5 月底前完成试点验收。</div>
+            </div>
+
+            <div class="subsection-title">（二）循环经济产业</div>
+
+            <div class="policy-card">
+                <div class="policy-title">
+                    <a href="https://www.zhoushan.gov.cn/col/col1229895779/art/2026/art_3ba0ad864f4bfd95f5ca1821a974421d.html" target="_blank">
+                        2026 年政府工作报告重点工作和民生实事责任分解
+                    </a>
+                </div>
+                <div class="meta-info">
+                    <span class="meta-tag">2026-03-04</span>
+                    <span>舟山市人民政府</span>
+                </div>
+                <div class="policy-desc">明确加快 "无废城市" 建设，实施固体废物综合治理行动，争创省级零碳园区、绿色（低碳）工厂。</div>
+            </div>
+
+            <div class="policy-card">
+                <div class="policy-title">
+                    <a href="https://www.zhoushan.gov.cn/col/col1229296638/art/2026/art_d45dfe44e0b2413993ac69296c6f5619.html" target="_blank">
+                        舟山市发改委2025年工作总结和2026年工作思路
+                    </a>
+                </div>
+                <div class="meta-info">
+                    <span class="meta-tag">2026-02-05</span>
+                    <span>舟山市发改委</span>
+                </div>
+                <div class="policy-desc">提出"可再生能源+储能+联合制氢+蓝碳" 发展路线，2025 年新增光伏装机16.01万千瓦、储能12.057万千瓦。</div>
+            </div>
+
+            <div class="subsection-title">（三）康养产业</div>
+
+            <div class="policy-card">
+                <div class="policy-title">
+                    <a href="https://www.zhoushan.gov.cn/col/col1229789526/art/2026/art_0db5366b9314a674044220cddf5a0986.html" target="_blank">
+                        2026 年政府工作报告
+                    </a>
+                </div>
+                <div class="meta-info">
+                    <span class="meta-tag">2026-02-10</span>
+                    <span>舟山市人民政府</span>
+                </div>
+                <div class="policy-desc">提出大力发展居家社区医养结合服务，深化民生服务综合体集成改革，2026年养老机构护理型床位占比达到68.5%。</div>
+            </div>
+
+            <div class="policy-card">
+                <div class="policy-title">
+                    <a href="https://epaper.wifizs.cn/zsrb/2026-01/08/content_99236683.html" target="_blank">
+                        舟山暖心民政“十四五”高质量发展答卷
+                    </a>
+                </div>
+                <div class="meta-info">
+                    <span class="meta-tag">2026-01-08</span>
+                    <span>舟山日报</span>
+                </div>
+                <div class="policy-desc">构建起以14个民生服务综合体、37个镇（街）养老服务中心、183个村（社）养老服务站为支撑的 "15 分钟养老服务圈"。</div>
+            </div>
+
+            <div class="policy-card">
+                <div class="policy-title">
+                    <a href="https://www.zhoushan.gov.cn/art/2025/11/17/art_1229810549_59307358.html" target="_blank">
+                        舟山市高质量完成 "十四五" 规划系列主题第二场新闻发布会
+                    </a>
+                </div>
+                <div class="meta-info">
+                    <span class="meta-tag">2025-11-17</span>
+                    <span>舟山市人民政府</span>
+                </div>
+                <div class="policy-desc">建成14家多功能民生服务综合体，养老机构入住率从37% 提高至56.14%，实施养老护理员 "十百千" 工程。</div>
+            </div>
+
+            <footer>
+                <p>© 2026 舟山城投政策资料库 | 仅供内部参考</p>
+            </footer>
+        </div>
     </div>
 
     <script>
-        // 密码验证
-        document.getElementById('password-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const password = document.getElementById('password').value;
-            const correctPassword = '888888';
-            
-            if (password === correctPassword) {
-                document.getElementById('password-page').classList.add('hidden');
-                document.getElementById('main-content').classList.remove('hidden');
-                // 保存登录状态
-                sessionStorage.setItem('policyDbLoggedIn', 'true');
+        function checkPassword() {
+            const input = document.getElementById('password-input').value;
+            const errorMsg = document.getElementById('error-msg');
+            const lockScreen = document.getElementById('lock-screen');
+            const mainContent = document.getElementById('main-content');
+
+            // 密码设置为 888888
+            if (input === '888888') {
+                lockScreen.style.opacity = '0';
+                setTimeout(() => {
+                    lockScreen.style.display = 'none';
+                    mainContent.style.display = 'block';
+                }, 500);
             } else {
-                document.getElementById('error-message').classList.remove('hidden');
-                document.getElementById('password').value = '';
-                document.getElementById('password').focus();
+                errorMsg.style.display = 'block';
+                document.getElementById('password-input').value = '';
+                document.getElementById('password-input').focus();
             }
-        });
+        }
 
-        // 检查登录状态
-        window.addEventListener('load', function() {
-            if (sessionStorage.getItem('policyDbLoggedIn') === 'true') {
-                document.getElementById('password-page').classList.add('hidden');
-                document.getElementById('main-content').classList.remove('hidden');
+        // 支持回车键提交
+        document.getElementById("password-input").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                checkPassword();
             }
-        });
-
-        // 切换密码可见性
-        document.getElementById('toggle-password').addEventListener('click', function() {
-            const passwordInput = document.getElementById('password');
-            const icon = this.querySelector('i');
-            
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                icon.classList.remove('fa-eye');
-                icon.classList.add('fa-eye-slash');
-            } else {
-                passwordInput.type = 'password';
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye');
-            }
-        });
-
-        // 搜索功能（支持搜索标题、文号、部门和简介）
-        document.getElementById('search-toggle').addEventListener('click', function() {
-            const searchContainer = document.getElementById('search-container');
-            searchContainer.classList.toggle('hidden');
-            if (!searchContainer.classList.contains('hidden')) {
-                document.getElementById('search-input').focus();
-            }
-        });
-
-        document.getElementById('search-input').addEventListener('input', function() {
-            const searchTerm = this.value.toLowerCase().trim();
-            const policyCards = document.querySelectorAll('.card-hover');
-            
-            policyCards.forEach(card => {
-                const text = card.textContent.toLowerCase();
-                if (text.includes(searchTerm) || searchTerm === '') {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        });
-
-        // 返回顶部
-        window.addEventListener('scroll', function() {
-            const backToTop = document.getElementById('back-to-top');
-            if (window.scrollY > 300) {
-                backToTop.classList.remove('hidden');
-            } else {
-                backToTop.classList.add('hidden');
-            }
-        });
-
-        document.getElementById('back-to-top').addEventListener('click', function() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        });
-
-        // 平滑滚动
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                if (targetId !== '#') {
-                    const targetElement = document.querySelector(targetId);
-                    if (targetElement) {
-                        targetElement.scrollIntoView({
-                            behavior: 'smooth'
-                        });
-                    }
-                }
-            });
         });
     </script>
 </body>
